@@ -10,6 +10,7 @@ CREATE DATABASE desafio
   WITH OWNER = postgres
     ENCODING = 'UTF8'
     TABLESPACE = pg_default;
+
 ----------------------------------
 
 frontend:
