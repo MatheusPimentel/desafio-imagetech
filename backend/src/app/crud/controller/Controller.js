@@ -87,8 +87,11 @@ export default class Controller {
 	alter (req, res, next) {
 		this.repository.update(req.body)
 			.then((result) => {
-				res.status(200).send(result)
+				// res.status(200).send(result)
+				req.params._id = req.body.id
+				this.getById(req, res, next)
 			}).catch((error) => {
+			console.log(error)
 			res.status(500).send({
 				err: 'Was not possible to update the register!',
 				detail: error

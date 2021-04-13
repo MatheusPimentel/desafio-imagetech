@@ -39,6 +39,10 @@ name: 'AppInput',
     typeInput: {
       type: String,
       default: 'text'
+    },
+    value: {
+      type: String,
+      default: undefined
     }
   }
 }

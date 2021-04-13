@@ -42,6 +42,7 @@
                 :rules="rulesPassword"
                 :label="$t('pages.usuario.fields.password')"
                 :value="user.password"
+                :type-input="'password'"
                 v-model="user.password"
               />
             </div>
@@ -49,7 +50,18 @@
         </q-card-section>
 
         <q-card-actions align="right" class="bg-white text-teal">
-          <q-btn flat label="OK" v-close-popup />
+          <app-button
+            class="style-button"
+            :label="$t('pages.usuario.buttons.salvar')"
+            :color="'positive'"
+            @click="salvar"
+          />
+          <app-button
+            class="style-button"
+            v-close-popup
+            :label="$t('pages.usuario.buttons.cancelar')"
+            :color="'negative'"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -57,8 +69,12 @@
 </template>
 
 <script>
+import validateMixin from 'pages/mixins/validateMixin.js'
+import UsuarioService from 'pages/usuario/service/UsuarioService.js'
+
 export default {
   name: 'Usuario',
+  mixins: [validateMixin],
   props: {
     usuario: {
       type: Object,
@@ -67,19 +83,36 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    fromVuex: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
-    user: {
-      email: undefined,
-      name: undefined,
-      password: undefined
-    },
+    user: undefined,
     open: false
   }),
   created () {
     this.open = this.value
     this.user = this.usuario
+  },
+  methods: {
+    salvar () {
+      if (!this.validate()) {
+        return
+      }
+      UsuarioService.build().create(this.user)
+        .then((user) => {
+          if (this.fromVuex) {
+            this.$store.dispatch('app/actionUser', user)
+            this.open = false
+            return
+          }
+          this.$emit('update-user', user)
+          this.open = false
+        })
+    }
   },
   computed: {
     getUserImage () {
@@ -97,7 +130,7 @@ export default {
     },
     rulesPassword () {
       return [
-        (value) => value && value.length > 0 || this.$t('pages.usuario.rules.rulesPassword.required')
+        (value) => value && value.length > 0 || this.$t('pages.usuario.rules.password.required')
       ]
     }
   },
@@ -128,5 +161,10 @@ export default {
 
 .div-input {
   padding: 5px;
+}
+
+.style-button {
+  width: 130px;
+  margin-right: 12px;
 }
 </style>

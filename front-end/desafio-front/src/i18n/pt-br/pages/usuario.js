@@ -4,6 +4,10 @@ export default {
     email: 'Email',
     password: 'Senha'
   },
+  buttons: {
+    salvar: 'Salvar',
+    cancelar: 'Cancelar'
+  },
   rules: {
     nome: {
       required: 'Este campo é obrigatório'

@@ -26,6 +26,7 @@
       <usuario
         :value="openDialog"
         :usuario="usuario"
+        :from-vuex="true"
         v-model="openDialog"
       />
       <q-page-container>
@@ -46,11 +47,7 @@ export default {
   },
   data: () => ({
     drawer: false,
-    usuario: {
-      email: undefined,
-      name: undefined,
-      password: undefined
-    },
+    usuario: undefined,
     openDialog: false
   }),
   methods: {
@@ -60,6 +57,13 @@ export default {
     editar (user) {
       this.openDialog = true
       this.usuario = JSON.parse(JSON.stringify(user))
+    }
+  },
+  watch: {
+    openDialog () {
+      if (!this.openDialog) {
+        this.usuario = undefined
+      }
     }
   }
 }

@@ -35,6 +35,9 @@ export default class Rest extends Api {
    * @returns {*|PromiseLike<T | never>|Promise<T | never>}
    */
   create (record) {
+    if (record.id) {
+      return this.put('', record)
+    }
     return this.post('', record)
   }
 

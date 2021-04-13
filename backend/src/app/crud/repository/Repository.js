@@ -59,7 +59,7 @@ export default class Repository {
 	 * @returns {Promise<unknown>}
 	 */
 	update (register) {
-		return this.entity.update(register)
+		return this.entity.update(register, { where: { id: register.id } })
 	}
 
 	/**

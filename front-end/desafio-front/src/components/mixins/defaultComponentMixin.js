@@ -23,12 +23,8 @@ export default {
     this.record = this.value
   },
   watch: {
-    value: {
-      deep: true,
-      handler () {
-        debugger
-        this.record = this.value
-      }
+    value () {
+      this.record = this.value
     },
     record () {
       this.$emit('input', this.record)
